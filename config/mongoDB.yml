@@ -1,0 +1,24 @@
+Default: &defaults
+  user: MetShop
+  password: MetShop
+  host: localhost
+  database: MetShop
+  connections: 10
+
+Development:
+  <<: *defaults
+
+Testing:
+  database: MetShop_test
+  <<: *defaults
+
+Staging:
+  database: MetShop_staging
+  connections: 100
+  <<: *defaults
+
+Production:
+  database: MetShop_production
+  connections: 100
+  host: localhost
+  <<: *defaults

@@ -1,0 +1,19 @@
+Default: &defaults
+  host: "*4" # any IPv4 host
+  port: 3000
+  approot: "http://192.168.33.10:3000"
+  copyright: Jabara's PetShop with MongoDB
+  #analytics: UA-YOURCODE
+
+Development:
+  <<: *defaults
+
+Testing:
+  <<: *defaults
+
+Staging:
+  <<: *defaults
+
+Production:
+  #approot: "http://www.example.com"
+  <<: *defaults
