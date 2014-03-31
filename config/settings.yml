@@ -15,5 +15,5 @@ Staging:
   <<: *defaults
 
 Production:
-  approot: "metshop.herokuapp.com"
+  approot: "http://metshop.herokuapp.com"
   <<: *defaults
