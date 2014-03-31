@@ -2,22 +2,26 @@ Default: &defaults
   user: MetShop
   password: MetShop
   host: localhost
-  database: MetShop
   connections: 10
 
 Development:
+  connections: 10
   <<: *defaults
 
 Testing:
-  database: MetShop_test
+  connections: 10
   <<: *defaults
 
 Staging:
+  user: MetShop
+  password: MetShop
+  host: localhost
   database: MetShop_staging
   connections: 100
   <<: *defaults
 
 Production:
+  url: mongodb://MetShop:MetShop@localhost:27017/MetShop_Testing
   database: MetShop_production
   connections: 100
   host: localhost
