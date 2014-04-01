@@ -19,6 +19,7 @@ library
                      Settings
                      Settings.StaticFiles
                      Settings.Development
+                     Utility
                      Handler.Home
                      Handler.UserList
                      Handler.User
@@ -73,6 +74,9 @@ library
                  , monad-logger                  >= 0.3        && < 0.4
                  , fast-logger                   >= 2.1.4      && < 2.2
                  , wai-logger                    >= 2.1        && < 2.2
+                 , network                       >= 2.3        && < 2.4
+                 , split                         >= 0.2        && < 0.3
+                 , cmdargs                       >= 0.10       && < 0.11
 
 executable         MetShop
     if flag(library-only)

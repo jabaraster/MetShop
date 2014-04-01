@@ -6,7 +6,6 @@ module Application
     ) where
 
 import Import
-import Settings
 import Yesod.Auth
 import Yesod.Default.Config
 import Yesod.Default.Main
@@ -16,12 +15,15 @@ import Network.Wai.Middleware.RequestLogger
     )
 import qualified Network.Wai.Middleware.RequestLogger as RequestLogger
 import qualified Database.Persist
+import Database.Persist.MongoDB
 import Network.HTTP.Conduit (newManager, conduitManagerSettings)
 import Control.Concurrent (forkIO, threadDelay)
 import System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize)
 import Network.Wai.Logger (clockDateCacher)
 import Data.Default (def)
 import Yesod.Core.Types (loggerSet, Logger (Logger))
+
+import Utility
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -65,8 +67,19 @@ makeFoundation conf = do
     s <- staticSite
     dbconf <- withYamlEnvironment "config/mongoDB.yml" (appEnv conf)
               Database.Persist.loadConfig >>=
-              Database.Persist.applyEnv
-    p <- Database.Persist.createPoolConfig (dbconf :: Settings.PersistConf)
+              \conf -> lookupMongoDBUrlFromArgs >>=
+              \mUrl -> case mUrl of
+                           Just url -> return $ parseAndApplyMongoDBUrl conf url
+                           Nothing  -> return conf
+
+    putStrLn "-------------------------"
+    putStrLn "-------------------------"
+    print dbconf
+    putStrLn "-------------------------"
+    putStrLn "-------------------------"
+
+
+    p <- Database.Persist.createPoolConfig (dbconf :: Database.Persist.MongoDB.MongoConf)
 
     loggerSet' <- newStdoutLoggerSet defaultBufSize
     (getter, updater) <- clockDateCacher

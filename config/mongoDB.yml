@@ -2,6 +2,7 @@ Default: &defaults
   user: MetShop
   password: MetShop
   host: localhost
+  database: MetShop
   connections: 10
 
 Development:

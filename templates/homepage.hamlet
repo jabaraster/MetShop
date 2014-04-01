@@ -3,6 +3,8 @@
     <a href=@{UserListR}>ユーザ一覧
   <li>
     <a href=/auth/login>ログイン
+  <li>
+    <a href=/auth/logout>ログアウト
 
 <h1>_{MsgHello}
 
@@ -10,4 +12,8 @@
 
 
 <ul>
-  <li>#{show session}
+  <li>Session: #{show session}
+  $maybe id <- mId
+    <li>AuthId : #{id}
+  $nothing
+    <li>AuthId : Nothing
