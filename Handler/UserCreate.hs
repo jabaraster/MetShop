@@ -4,10 +4,14 @@ import Import
 
 getUserCreateR :: Handler Html
 getUserCreateR = do
-    (widget, enctype) <- generateFormPost userForm
-    defaultLayout $ do
-      setTitle "ユーザ追加"
-      $(widgetFile "user-form-")
+    mId <- lookupSession "_ID"
+    case mId of
+      Nothing -> redirect HomeR
+      _       -> do
+                   (widget, enctype) <- generateFormPost userForm
+                   defaultLayout $ do
+                     setTitle "ユーザ追加"
+                     $(widgetFile "user-form-")
 
 postUserCreateR :: Handler Html
 postUserCreateR = do

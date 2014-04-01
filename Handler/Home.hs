@@ -6,6 +6,7 @@ import Import
 getHomeR :: Handler Html
 getHomeR = do
     session <- getSession
+    mId     <- lookupSession "_ID"
     defaultLayout $ do
         setTitle "Welcome To MetShop!"
         $(widgetFile "homepage")

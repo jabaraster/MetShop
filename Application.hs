@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
+{-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
 module Application
     ( makeApplication
     , getApplicationDev
@@ -6,7 +7,6 @@ module Application
     ) where
 
 import Import
-import Settings
 import Yesod.Auth
 import Yesod.Default.Config
 import Yesod.Default.Main
@@ -16,12 +16,18 @@ import Network.Wai.Middleware.RequestLogger
     )
 import qualified Network.Wai.Middleware.RequestLogger as RequestLogger
 import qualified Database.Persist
+import Database.Persist.MongoDB
 import Network.HTTP.Conduit (newManager, conduitManagerSettings)
 import Control.Concurrent (forkIO, threadDelay)
 import System.Log.FastLogger (newStdoutLoggerSet, defaultBufSize)
 import Network.Wai.Logger (clockDateCacher)
 import Data.Default (def)
 import Yesod.Core.Types (loggerSet, Logger (Logger))
+
+import System.Environment
+import qualified Data.Text as T
+import qualified Control.Exception as E
+import qualified GHC.Exception as GE
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -66,7 +72,19 @@ makeFoundation conf = do
     dbconf <- withYamlEnvironment "config/mongoDB.yml" (appEnv conf)
               Database.Persist.loadConfig >>=
               Database.Persist.applyEnv
-    p <- Database.Persist.createPoolConfig (dbconf :: Settings.PersistConf)
+    dbconf' <- applyDatabase dbconf
+
+    putStrLn "-------------------------"
+    putStrLn "-------------------------"
+    lookupEnv "PATH" >>= print
+    lookupEnv "database" >>= print
+    print dbconf
+    print dbconf'
+    putStrLn "-------------------------"
+    putStrLn "-------------------------"
+
+
+    p <- Database.Persist.createPoolConfig (dbconf :: Database.Persist.MongoDB.MongoConf)
 
     loggerSet' <- newStdoutLoggerSet defaultBufSize
     (getter, updater) <- clockDateCacher
@@ -85,6 +103,14 @@ makeFoundation conf = do
         foundation = App conf s p manager dbconf logger
 
     return foundation
+
+    where applyDatabase dc = lookupEnv "database" >>=
+              \v -> case v of
+                        Just val -> return dc { mgDatabase = val }
+                        Nothing  -> return dc
+
+lookupEnv :: String -> IO (Maybe T.Text)
+lookupEnv key = (getEnv key >>= return . Just . T.pack) `E.catch` (\(_::GE.SomeException) -> return Nothing)
 
 -- for yesod devel
 getApplicationDev :: IO (Int, Application)
