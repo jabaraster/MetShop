@@ -3,8 +3,6 @@
 module Utility where
 
 import Prelude
-import qualified Control.Exception as E
-import qualified GHC.Exception as GE
 import Data.List.Split (splitOneOf)
 import Data.Text (Text, pack)
 import Data.Word (Word16)
@@ -28,22 +26,16 @@ parseAndApplyMongoDBUrl conf url =
          , mgAuth     = Just $ MongoAuth user password
          }
 
-main = lookupMongoDBUrlFromArgs' >>= print
-
-lookupEnv :: String -> IO (Maybe Text)
-lookupEnv key = (getEnv key >>= return . Just . pack) `E.catch` (\(_::GE.SomeException) -> return Nothing)
-
-{--
-lookupMongoDBUrlFromArgs' :: IO (Maybe String)
-lookupMongoDBUrlFromArgs' = do
-    args <- getArgs
-    --}
-
-groupn :: [a] -> [(a,a)]
-groupn [] = []
-groupn xs =
-  let (xs1, xs2) = splitAt 2 xs
-  in  (xs1 !! 0, xs1 !! 1) : groupn xs2
-
 lookupMongoDBUrlFromArgs :: IO (Maybe String)
 lookupMongoDBUrlFromArgs = getArgs >>= return . groupn >>= return . lookup "--mongodb-url"
+  where
+    groupn :: [a] -> [(a,a)]
+    groupn [] = []
+    groupn xs =
+      let (xs1, xs2) = splitAt 2 xs
+      in  (xs1 !! 0, xs1 !! 1) : groupn xs2
+
+{--
+lookupEnv :: String -> IO (Maybe Text)
+lookupEnv key = (getEnv key >>= return . Just . pack) `E.catch` (\(_::GE.SomeException) -> return Nothing)
+--}

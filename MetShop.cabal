@@ -108,3 +108,5 @@ test-suite test
                  , monad-logger
                  , transformers
                  , hspec
+                 , network
+                 , split

@@ -67,7 +67,7 @@ makeFoundation conf = do
     s <- staticSite
     dbconf <- withYamlEnvironment "config/mongoDB.yml" (appEnv conf)
               Database.Persist.loadConfig >>=
-              \conf -> lookupMongoDBUrlFromArgs' >>=
+              \conf -> lookupMongoDBUrlFromArgs >>=
               \mUrl -> case mUrl of
                            Just url -> return $ parseAndApplyMongoDBUrl conf url
                            Nothing  -> return conf
