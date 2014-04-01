@@ -29,16 +29,31 @@ parseAndApplyMongoDBUrl conf url =
          , mgAuth     = Just $ MongoAuth user password
          }
 
-main = lookupMongoDBUrlFromArgs >>= print
+main = lookupMongoDBUrlFromArgs' >>= print
 
 lookupEnv :: String -> IO (Maybe Text)
 lookupEnv key = (getEnv key >>= return . Just . pack) `E.catch` (\(_::GE.SomeException) -> return Nothing)
 
+{--
+lookupMongoDBUrlFromArgs' :: IO (Maybe String)
+lookupMongoDBUrlFromArgs' = do
+    args <- getArgs
+    --}
+
+groupn :: [a] -> [(a,a)]
+groupn [] = []
+groupn xs =
+  let (xs1, xs2) = splitAt 2 xs
+  in  (xs1 !! 0, xs1 !! 1) : groupn xs2
+
+lookupMongoDBUrlFromArgs' :: IO (Maybe String)
+lookupMongoDBUrlFromArgs' = getArgs >>= return . groupn >>= return . lookup "--mongodb-url"
+
 lookupMongoDBUrlFromArgs :: IO (Maybe String)
 lookupMongoDBUrlFromArgs = do
-    args <- cmdArgs $ MongoDBArgs Nothing
+    args <- cmdArgs $ MongoDBArgs Nothing 80
     return $ mongodb_url args
 
-data MongoDBArgs = MongoDBArgs {
-                      mongodb_url :: Maybe String
-                   } deriving (Data, Typeable, Show)
+data MongoDBArgs = MongoDBArgs { mongodb_url :: Maybe String
+                               , port :: Int
+                               } deriving (Data, Typeable, Show)
