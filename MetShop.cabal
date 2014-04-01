@@ -74,8 +74,6 @@ library
                  , monad-logger                  >= 0.3        && < 0.4
                  , fast-logger                   >= 2.1.4      && < 2.2
                  , wai-logger                    >= 2.1        && < 2.2
-                 , network                       >= 2.3        && < 2.4
-                 , split                         >= 0.2        && < 0.3
 
 executable         MetShop
     if flag(library-only)
@@ -86,8 +84,6 @@ executable         MetShop
     build-depends:     base
                      , MetShop
                      , yesod
-                     , network
-                     , split
 
     ghc-options:       -threaded -O2
 
@@ -108,5 +104,3 @@ test-suite test
                  , monad-logger
                  , transformers
                  , hspec
-                 , network
-                 , split
