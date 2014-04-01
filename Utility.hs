@@ -11,7 +11,6 @@ import Data.Word (Word16)
 import Database.Persist.MongoDB (MongoConf(..), MongoAuth(..))
 import Network
 import Network.Socket (PortNumber(..))
-import System.Console.CmdArgs
 import System.Environment
 
 parseAndApplyMongoDBUrl :: MongoConf -> String -> MongoConf
@@ -46,14 +45,5 @@ groupn xs =
   let (xs1, xs2) = splitAt 2 xs
   in  (xs1 !! 0, xs1 !! 1) : groupn xs2
 
-lookupMongoDBUrlFromArgs' :: IO (Maybe String)
-lookupMongoDBUrlFromArgs' = getArgs >>= return . groupn >>= return . lookup "--mongodb-url"
-
 lookupMongoDBUrlFromArgs :: IO (Maybe String)
-lookupMongoDBUrlFromArgs = do
-    args <- cmdArgs $ MongoDBArgs Nothing 80
-    return $ mongodb_url args
-
-data MongoDBArgs = MongoDBArgs { mongodb_url :: Maybe String
-                               , port :: Int
-                               } deriving (Data, Typeable, Show)
+lookupMongoDBUrlFromArgs = getArgs >>= return . groupn >>= return . lookup "--mongodb-url"

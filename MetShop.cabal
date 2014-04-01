@@ -76,7 +76,6 @@ library
                  , wai-logger                    >= 2.1        && < 2.2
                  , network                       >= 2.3        && < 2.4
                  , split                         >= 0.2        && < 0.3
-                 , cmdargs                       >= 0.10       && < 0.11
 
 executable         MetShop
     if flag(library-only)
@@ -87,6 +86,8 @@ executable         MetShop
     build-depends:     base
                      , MetShop
                      , yesod
+                     , network
+                     , split
 
     ghc-options:       -threaded -O2
 
