@@ -87,4 +87,4 @@
 
 
 # Heroku configuration that runs your app
-web: ./dist/build/MetShop/MetShop production -p $PORT --mongodb-url=$MONGOHQ_URL
+web: ./dist/build/MetShop/MetShop production -p $PORT --mongodb-url $MONGOHQ_URL

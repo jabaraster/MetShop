@@ -4,7 +4,6 @@ module Utility where
 
 import Prelude
 import Data.List.Split (splitOneOf)
-import Data.Text (Text, pack)
 import Database.Persist.MongoDB (MongoConf(..), MongoAuth(..))
 import Network
 import Network.Socket (PortNumber(..))
