@@ -32,6 +32,8 @@ import Handler.UserList
 import Handler.User
 import Handler.UserCreate
 
+import System.Environment (getEnv)
+
 -- This line actually creates our YesodDispatch instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see the
 -- comments there for more details.
@@ -67,17 +69,8 @@ makeFoundation conf = do
     s <- staticSite
     dbconf <- withYamlEnvironment "config/mongoDB.yml" (appEnv conf)
               Database.Persist.loadConfig >>=
-              \conf -> lookupMongoDBUrlFromArgs >>=
-              \mUrl -> case mUrl of
-                           Just url -> return $ parseAndApplyMongoDBUrl conf url
-                           Nothing  -> return conf
-
-    putStrLn "-------------------------"
-    putStrLn "-------------------------"
-    print dbconf
-    putStrLn "-------------------------"
-    putStrLn "-------------------------"
-
+              \conf' -> lookupMongoDBUrlFromEnv >>=
+              maybe (return conf') (return . parseAndApplyMongoDBUrl conf')
 
     p <- Database.Persist.createPoolConfig (dbconf :: Database.Persist.MongoDB.MongoConf)
 
