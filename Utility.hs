@@ -4,11 +4,14 @@ module Utility where
 
 import Prelude
 import Data.List.Split (splitOneOf)
-import Data.Text (Text, pack)
+import Data.Text (pack)
 import Database.Persist.MongoDB (MongoConf(..), MongoAuth(..))
-import Network
-import Network.Socket (PortNumber(..))
+import Network (PortID(PortNumber))
+-- import Network.Socket (PortNumber(..))
 import System.Environment
+
+import qualified Control.Exception as E
+import qualified GHC.Exception as GE
 
 parseAndApplyMongoDBUrl :: MongoConf -> String -> MongoConf
 parseAndApplyMongoDBUrl conf url =
@@ -16,7 +19,8 @@ parseAndApplyMongoDBUrl conf url =
         user     = pack (tokens !! 3)
         password = pack (tokens !! 4)
         host     = pack (tokens !! 5)
-        port     = PortNumber $ PortNum $ read (tokens !! 6) -- PortNumを使うのは正しくない気がしているが、他の方法が見付からず・・・
+        intPort  = read (tokens !! 6) :: Int
+        port     = PortNumber $ fromIntegral intPort -- PortNumを使うのは正しくない気がしているが、他の方法が見付からず・・・
         database = pack (tokens !! 7)
     in
     conf { mgDatabase = database
@@ -25,6 +29,13 @@ parseAndApplyMongoDBUrl conf url =
          , mgAuth     = Just $ MongoAuth user password
          }
 
+lookupMongoDBUrlFromEnv :: IO (Maybe String)
+lookupMongoDBUrlFromEnv = lookupFromEnv "MONGODB_URL_ENV_NAME" >>= maybe (return Nothing) lookupFromEnv
+  where
+    lookupFromEnv :: String -> IO (Maybe String)
+    lookupFromEnv key = (getEnv key >>= return . Just) `E.catch` (\(_::GE.SomeException) -> return Nothing)
+
+{--
 lookupMongoDBUrlFromArgs :: IO (Maybe String)
 lookupMongoDBUrlFromArgs = getArgs >>= return . groupn >>= return . lookup "--mongodb-url"
   where
@@ -33,8 +44,5 @@ lookupMongoDBUrlFromArgs = getArgs >>= return . groupn >>= return . lookup "--mo
     groupn xs =
       let (xs1, xs2) = splitAt 2 xs
       in  (xs1 !! 0, xs1 !! 1) : groupn xs2
-
-{--
-lookupEnv :: String -> IO (Maybe Text)
-lookupEnv key = (getEnv key >>= return . Just . pack) `E.catch` (\(_::GE.SomeException) -> return Nothing)
 --}
+
