@@ -4,6 +4,7 @@ import Prelude
 import Yesod
 import Yesod.Static
 import Yesod.Auth
+import Yesod.Auth.Email
 import Yesod.Auth.BrowserId
 import Yesod.Auth.GoogleEmail
 import Yesod.Default.Config
@@ -85,6 +86,9 @@ instance Yesod App where
     -- The page to be redirected to when authentication is required.
     authRoute _ = Just $ AuthR LoginR
 
+    isAuthorized UserCreateR _ = isAdmin
+    isAuthorized _ _ = return Authorized
+
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
     -- expiration dates to be set far in the future without worry of
@@ -112,6 +116,14 @@ instance YesodPersist App where
     type YesodPersistBackend App = Action
     runDB = defaultRunDB persistConfig connPool
 
+isAdmin :: HandlerT App IO AuthResult
+isAdmin = do
+    mu <- maybeAuthId
+    return $ case mu of
+        Nothing -> AuthenticationRequired
+--        Just _ -> Unauthorized "Y
+        Just _ -> Authorized
+
 instance YesodAuth App where
     type AuthId App = UserId
 
@@ -131,7 +143,8 @@ instance YesodAuth App where
                     }
 
     -- You can add other plugins like BrowserID, email or OAuth here
-    authPlugins _ = [authBrowserId def, authGoogleEmail]
+--    authPlugins _ = [authBrowserId def, authGoogleEmail]
+    authPlugins _ = [authGoogleEmail]
 
     authHttpManager = httpManager
 

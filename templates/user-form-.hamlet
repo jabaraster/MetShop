@@ -3,6 +3,6 @@
     <a href=@{UserListR}>ユーザ一覧
 
 <h1>ユーザ追加
-<form method=post action=#form enctype=#{enctype}>
+<form method=post>
   ^{widget}
   <input type="submit" value="Send it!">

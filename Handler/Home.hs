@@ -9,7 +9,7 @@ getHomeR = do
     mId     <- lookupSession "_ID"
     defaultLayout $ do
         setTitle "Welcome To MetShop!"
-        $(widgetFile "homepage")
+        $(widgetFile "home")
 
 postHomeR :: Handler Html
 postHomeR = undefined

@@ -1,10 +1,12 @@
 <ul>
   <li>
     <a href=@{UserListR}>ユーザ一覧
-  <li>
-    <a href=/auth/login>ログイン
-  <li>
-    <a href=/auth/logout>ログアウト
+  $maybe _ <- mId
+    <li>
+      <a href=/auth/logout>ログアウト
+  $nothing
+    <li>
+      <a href=/auth/login>ログイン
 
 <h1>_{MsgHello}
 

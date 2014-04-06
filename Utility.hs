@@ -16,8 +16,9 @@ import Yesod.Core.Handler
 
 import Yesod.Core
 
-parseAndApplyMongoDBUrl :: MongoConf -> String -> MongoConf
-parseAndApplyMongoDBUrl conf url =
+parseAndApplyMongoDBUrl :: MongoConf -> Maybe String -> MongoConf
+parseAndApplyMongoDBUrl conf Nothing = conf
+parseAndApplyMongoDBUrl conf (Just url) =
     let tokens   = splitOneOf ":@/" url -- 本当はNetwork.URI.parseURIでパースした方が安全なのだが、細かい文字列処理が増えて面倒なので、ここではsplitOneOfを使う.
         user     = pack (tokens !! 3)
         password = pack (tokens !! 4)

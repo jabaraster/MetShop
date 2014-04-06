@@ -66,7 +66,7 @@ makeFoundation conf = do
     dbconf <- withYamlEnvironment "config/mongoDB.yml" (appEnv conf)
               Database.Persist.loadConfig >>=
               \conf' -> lookupMongoDBUrlFromEnv >>=
-              maybe (return conf') (return . parseAndApplyMongoDBUrl conf')
+              return . parseAndApplyMongoDBUrl conf'
 
     p <- Database.Persist.createPoolConfig (dbconf :: Database.Persist.MongoDB.MongoConf)
 

@@ -19,6 +19,7 @@ library
                      Settings
                      Settings.StaticFiles
                      Settings.Development
+                     Widgets
                      Utility
                      Handler.Home
                      Handler.UserList

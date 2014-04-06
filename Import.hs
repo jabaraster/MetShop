@@ -15,6 +15,7 @@ import           Settings             as Import
 import           Settings.Development as Import
 import           Settings.StaticFiles as Import
 
+import           Widgets              as Import
 import           Utility              as Import
 
 #if __GLASGOW_HASKELL__ >= 704
