@@ -8,7 +8,7 @@ getUserCreateR = do
     (widget, _) <- generateFormPost userForm
     defaultLayout $ do
       setTitle "ユーザ追加"
-      userWidget widget
+      userFormWidget widget
 
 postUserCreateR :: Handler Html
 postUserCreateR = do
@@ -19,7 +19,7 @@ postUserCreateR = do
                             redirect UserListR
       _ -> defaultLayout $ do
              setTitle "ユーザ追加"
-             userWidget widget
+             userFormWidget widget
 
 userForm :: Form User
 userForm = renderBootstrap3 BootstrapBasicForm ( User
@@ -27,3 +27,6 @@ userForm = renderBootstrap3 BootstrapBasicForm ( User
     <*> aopt passwordField "パスワード" Nothing
     )
 
+
+userFormWidget :: Widget -> Widget
+userFormWidget widget = $(widgetFile "userForm")

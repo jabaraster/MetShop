@@ -1,0 +1,9 @@
+<ul class="menu">
+  <li>
+    <a href=@{PetCreateR}>ペット登録
+  ^{menuWidget}
+
+<ul>
+  $forall Entity _ pet <- pets
+    <li>
+      #{petName pet}

@@ -5,7 +5,7 @@ import Yesod
 import Yesod.Static
 import Yesod.Auth
 import Yesod.Auth.Email
-import Yesod.Auth.BrowserId
+-- import Yesod.Auth.BrowserId
 import Yesod.Auth.GoogleEmail
 import Yesod.Default.Config
 import Yesod.Default.Util (addStaticContentExternal)
@@ -87,6 +87,7 @@ instance Yesod App where
     authRoute _ = Just $ AuthR LoginR
 
     isAuthorized UserCreateR _ = isAdmin
+    isAuthorized PetCreateR  _ = isAdmin
     isAuthorized _ _ = return Authorized
 
     -- This function creates static content files in the static folder

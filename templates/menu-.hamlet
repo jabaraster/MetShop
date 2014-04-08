@@ -1,0 +1,8 @@
+<li>
+  <a href=@{HomeR}>ホームへ
+  $if login
+    <li>
+      <a href=/auth/logout>ログアウト
+  $else
+    <li>
+      <a href=/auth/login>ログイン

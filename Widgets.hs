@@ -2,6 +2,9 @@ module Widgets where
 
 import Foundation
 import Settings
+import Utility
 
-userWidget :: Widget -> Widget
-userWidget widget = $(widgetFile "user-form-")
+menuWidget :: Widget
+menuWidget = do
+    login <- isLogin
+    $(widgetFile "menu-")

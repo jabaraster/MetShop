@@ -1,8 +1,10 @@
-<ul>
-  <li>
-    <a href=@{HomeR}>ホームへ
+<ul class="menu">
   <li>
     <a href=@{UserCreateR}>ユーザ追加
+    $if login
+    $else
+      <span>(ログインが必要)
+  ^{menuWidget}
 
 <h1>ユーザ一覧
 <ul>

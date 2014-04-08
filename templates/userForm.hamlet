@@ -1,6 +1,7 @@
-<ul>
+<ul class="menu">
   <li>
     <a href=@{UserListR}>ユーザ一覧
+  ^{menuWidget}
 
 <h1>ユーザ追加
 <form method=post>

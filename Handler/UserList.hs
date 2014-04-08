@@ -7,4 +7,9 @@ getUserListR = do
     users <- runDB $ selectList [] [Asc UserIdent]
     defaultLayout $ do
       setTitle "ユーザ一覧"
-      $(widgetFile "user-list")
+      userListWidget users
+
+userListWidget :: [Entity User] -> Widget
+userListWidget users = do
+    login <- isLogin
+    $(widgetFile "userList")

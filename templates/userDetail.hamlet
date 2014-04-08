@@ -1,5 +1,6 @@
-<ul>
+<ul class="menu">
   <li>
     <a href=@{UserListR}>ユーザ一覧
+  ^{menuWidget}
 
 <h1>#{userIdent user}

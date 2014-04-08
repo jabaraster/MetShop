@@ -1,21 +1,10 @@
-<ul>
+<ul class="menu">
   <li>
     <a href=@{UserListR}>ユーザ一覧
-  $maybe _ <- mId
-    <li>
-      <a href=/auth/logout>ログアウト
-  $nothing
-    <li>
-      <a href=/auth/login>ログイン
+  <li>
+    <a href=@{PetListR}>ペット一覧
+  ^{menuWidget}
 
-<h1>_{MsgHello}
-
-  <p> Haskell製Webアプリケーションフレームワーク、<a href="http://www.yesodweb.com">Yesod</a>で作られたペットショップへようこそ！
-
-
-<ul>
-  <li>Session: #{show session}
-  $maybe id <- mId
-    <li>AuthId : #{id}
-  $nothing
-    <li>AuthId : Nothing
+<p> Haskell製Webアプリケーションフレームワーク、<a href="http://www.yesodweb.com">Yesod</a>で作られたペットショップ
+<h1> MetShop
+<p> へようこそ！

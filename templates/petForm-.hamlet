@@ -1,0 +1,9 @@
+<ul class="menu">
+  <li>
+    <a href=@{PetListR}>ペット一覧
+  ^{menuWidget}
+
+<h1>ペット登録
+<form method=post>
+  ^{widget}
+  <input type="submit" value="Send it!">
