@@ -1,9 +1,14 @@
-<ul class="menu">
+<ul .menu>
   <li>
     <a href=@{PetCreateR}>ペット登録
   ^{menuWidget}
 
+<h1>ペット一覧
+
 <ul>
-  $forall Entity _ pet <- pets
+  $forall (Entity _ pet, mCategory) <- pets
     <li>
-      #{petName pet}
+      $maybe category <- mCategory
+        #{petName pet}(#{petCategoryName category})
+      $nothing
+        #{petName pet}

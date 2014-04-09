@@ -1,4 +1,4 @@
-<ul class="menu">
+<ul .menu>
   <li>
     <a href=@{UserCreateR}>ユーザ追加
     $if login

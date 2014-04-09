@@ -10,9 +10,10 @@ Email
     UniqueEmail email
 PetCategory
     name Text
-    UniquePetCategory name
+    UniquePetCategoryName name
 Pet
     name Text
+    petCategory PetCategoryId Maybe
     UniquePet name
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)

@@ -1,4 +1,4 @@
-<ul class="menu">
+<ul .menu>
   <li>
     <a href=@{UserListR}>ユーザ一覧
   <li>

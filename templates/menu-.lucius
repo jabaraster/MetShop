@@ -6,3 +6,8 @@ ul.menu {
         margin-left: 20px;
     }
 }
+
+footer {
+    text-align: center;
+    border-top: solid 1px rgba(30,0,0,.3);
+}

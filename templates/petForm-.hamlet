@@ -1,4 +1,4 @@
-<ul class="menu">
+<ul .menu>
   <li>
     <a href=@{PetListR}>ペット一覧
   ^{menuWidget}
