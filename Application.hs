@@ -23,16 +23,14 @@ import Network.Wai.Logger (clockDateCacher)
 import Data.Default (def)
 import Yesod.Core.Types (loggerSet, Logger (Logger))
 
-import Utility
-
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
 import Handler.Home
 import Handler.UserList
 import Handler.User
 import Handler.UserCreate
-
-import System.Environment (getEnv)
+import Handler.PetList
+import Handler.PetCreate
 
 -- This line actually creates our YesodDispatch instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see the
@@ -70,7 +68,7 @@ makeFoundation conf = do
     dbconf <- withYamlEnvironment "config/mongoDB.yml" (appEnv conf)
               Database.Persist.loadConfig >>=
               \conf' -> lookupMongoDBUrlFromEnv >>=
-              maybe (return conf') (return . parseAndApplyMongoDBUrl conf')
+              return . parseAndApplyMongoDBUrl conf'
 
     p <- Database.Persist.createPoolConfig (dbconf :: Database.Persist.MongoDB.MongoConf)
 

@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, ScopedTypeVariables, DeriveDataTypeable #-}
+{-# LANGUAGE OverloadedStrings, ScopedTypeVariables, DeriveDataTypeable, NoMonomorphismRestriction #-}
 
 module Utility where
 
@@ -7,20 +7,23 @@ import Data.List.Split (splitOneOf)
 import Data.Text (pack)
 import Database.Persist.MongoDB (MongoConf(..), MongoAuth(..))
 import Network (PortID(PortNumber))
--- import Network.Socket (PortNumber(..))
 import System.Environment
 
-import qualified Control.Exception as E
+import qualified Control.Exception as E (catch)
 import qualified GHC.Exception as GE
 
-parseAndApplyMongoDBUrl :: MongoConf -> String -> MongoConf
-parseAndApplyMongoDBUrl conf url =
-    let tokens   = splitOneOf ":@/" url
+import Yesod.Core.Handler
+
+import Yesod.Core
+
+parseAndApplyMongoDBUrl :: MongoConf -> Maybe String -> MongoConf
+parseAndApplyMongoDBUrl conf Nothing = conf
+parseAndApplyMongoDBUrl conf (Just url) =
+    let tokens   = splitOneOf ":@/" url -- 本当はNetwork.URI.parseURIでパースした方が安全なのだが、細かい文字列処理が増えて面倒なので、ここではsplitOneOfを使う.
         user     = pack (tokens !! 3)
         password = pack (tokens !! 4)
         host     = pack (tokens !! 5)
-        intPort  = read (tokens !! 6) :: Int
-        port     = PortNumber $ fromIntegral intPort -- PortNumを使うのは正しくない気がしているが、他の方法が見付からず・・・
+        port     = PortNumber $ fromIntegral (read (tokens !! 6) :: Int)
         database = pack (tokens !! 7)
     in
     conf { mgDatabase = database
@@ -35,14 +38,12 @@ lookupMongoDBUrlFromEnv = lookupFromEnv "MONGODB_URL_ENV_NAME" >>= maybe (return
     lookupFromEnv :: String -> IO (Maybe String)
     lookupFromEnv key = (getEnv key >>= return . Just) `E.catch` (\(_::GE.SomeException) -> return Nothing)
 
-{--
-lookupMongoDBUrlFromArgs :: IO (Maybe String)
-lookupMongoDBUrlFromArgs = getArgs >>= return . groupn >>= return . lookup "--mongodb-url"
-  where
-    groupn :: [a] -> [(a,a)]
-    groupn [] = []
-    groupn xs =
-      let (xs1, xs2) = splitAt 2 xs
-      in  (xs1 !! 0, xs1 !! 1) : groupn xs2
---}
+isLogin :: MonadHandler m => m Bool
+isLogin = lookupSession "_ID" >>= maybe (return False) (\_ -> return True)
 
+loginOperation :: MonadHandler m => m a -> m a -> m a
+loginOperation f g = do
+    b <- isLogin
+    case b of
+        False -> f
+        True  -> g

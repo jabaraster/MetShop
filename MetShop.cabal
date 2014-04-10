@@ -19,11 +19,14 @@ library
                      Settings
                      Settings.StaticFiles
                      Settings.Development
+                     Widgets
                      Utility
                      Handler.Home
                      Handler.UserList
                      Handler.User
                      Handler.UserCreate
+                     Handler.PetList
+                     Handler.PetCreate
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT

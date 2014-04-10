@@ -1,5 +1,0 @@
-<ul>
-  <li>
-    <a href=@{UserListR}>ユーザ一覧
-
-<h1>#{userIdent user}

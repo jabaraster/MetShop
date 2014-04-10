@@ -1,0 +1,10 @@
+<ul .menu>
+  <li>
+    <a href=@{UserListR}>ユーザ一覧
+  <li>
+    <a href=@{PetListR}>ペット一覧
+  ^{menuWidget}
+
+<p> Haskell製Webアプリケーションフレームワーク、<a href="http://www.yesodweb.com">Yesod</a>で作られたペットショップ
+<h1> MetShop
+<p> へようこそ！
