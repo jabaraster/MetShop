@@ -22,9 +22,6 @@ library
                      Widgets
                      Utility
                      Handler.Home
-                     Handler.UserList
-                     Handler.User
-                     Handler.UserCreate
                      Handler.PetList
                      Handler.PetCreate
 

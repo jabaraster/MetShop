@@ -5,9 +5,6 @@
 /robots.txt RobotsR GET
 
 /             HomeR       GET
-/users        UserListR   GET
-/user/#UserId UserR       GET
-/user         UserCreateR GET POST
 
 /pets         PetListR   GET
 /pet          PetCreateR GET POST

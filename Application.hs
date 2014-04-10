@@ -26,9 +26,6 @@ import Yesod.Core.Types (loggerSet, Logger (Logger))
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
 import Handler.Home
-import Handler.UserList
-import Handler.User
-import Handler.UserCreate
 import Handler.PetList
 import Handler.PetCreate
 
